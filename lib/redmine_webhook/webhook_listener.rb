@@ -81,6 +81,7 @@ module RedmineWebhook
             # Sign payload
             key = webhook.secret_key
             data = request_body.to_s
+            #data.encode('utf-8')
             # TODO: Allow configuration of HMAC algorithm in redmine configuration
             mac = OpenSSL::HMAC.hexdigest("SHA1", key, data)
             Faraday.post do |req|
@@ -88,6 +89,7 @@ module RedmineWebhook
               req.headers['Content-Type'] = 'application/json'
               req.headers['X-RedmineWebhook-HMAC-Alg'] = 'sha1'
               req.headers['X-RedmineWebhook-HMAC-Key'] = key  # THIS IS TEMP FOR DEBUG ONLY. TO BE REMOVED
+              req.headers['X-RedmineWebhook-HMAC-Enc'] = data.encoding  # THIS IS TEMP FOR DEBUG ONLY. TO BE REMOVED
               req.headers['X-RedmineWebhook-HMAC-Signature'] = mac
               req.body = request_body
             end
