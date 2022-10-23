@@ -80,7 +80,7 @@ module RedmineWebhook
           begin
             # Sign payload
             key = webhook.secret_key
-            data = request_body.to_s
+            data = request_body
             #data.encode('utf-8')
             # TODO: Allow configuration of HMAC algorithm in redmine configuration
             mac = OpenSSL::HMAC.hexdigest("SHA1", key, data)
