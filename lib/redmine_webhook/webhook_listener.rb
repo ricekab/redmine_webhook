@@ -87,6 +87,7 @@ module RedmineWebhook
               req.url webhook.url
               req.headers['Content-Type'] = 'application/json'
               req.headers['X-RedmineWebhook-HMAC-Alg'] = 'sha1'
+              req.headers['X-RedmineWebhook-HMAC-Key'] = key  # THIS IS TEMP FOR DEBUG ONLY. TO BE REMOVED
               req.headers['X-RedmineWebhook-HMAC-Signature'] = mac
               req.body = request_body
             end
