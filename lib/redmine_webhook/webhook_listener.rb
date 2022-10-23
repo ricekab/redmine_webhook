@@ -78,15 +78,16 @@ module RedmineWebhook
       Thread.start do
         webhooks.each do |webhook|
           begin
-            # HMAC here
+            # Sign payload
             key = webhook.secret_key
-            data = request_body  # Might need to parse to string? not sure what type this is
+            data = request_body
+            # TODO: Allow configuration of HMAC algorithm in redmine configuration
             mac = OpenSSL::HMAC.hexdigest("SHA1", key, data)
-            # ---
             Faraday.post do |req|
               req.url webhook.url
               req.headers['Content-Type'] = 'application/json'
-              req.headers['X-RedmineWebhook-Signature'] = mac
+              req.headers['X-RedmineWebhook-HMAC-Alg'] = 'sha1'
+              req.headers['X-RedmineWebhook-HMAC-Signature'] = mac
               req.body = request_body
             end
           rescue => e
