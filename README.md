@@ -173,6 +173,14 @@ When a webhook triggers a change via REST API, this would trigger another webhoo
 If you need to prevent this, the API request can include the `X-Skip-Webhooks` header, which will prevent webhooks being triggered by that request.
 
 
+Securing webhooks
+-----------------------------
+Webhook body may be optionally signed using `SHA-256` hash function, if you provide non-empty *Secret key* along with webhook *URL*.
+In this case hash signature is included with the headers as `X-RedmineWebhook-Signature`. Header format is the same as *GitHub* signs its webhooks' payload, for example:
+`X-RedmineWebhook-Signature: sha256=b8f433a036377fdaf21fc08a89350993ddf1cdb9a084741106e27e23d7b9eb91`
+Please see https://docs.github.com/en/webhooks-and-events/webhooks/securing-your-webhooks#validating-payloads-from-github for details.
+
+
 Known Limitations
 ------------------------------
 

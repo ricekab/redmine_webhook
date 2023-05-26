@@ -2,13 +2,14 @@
 <div class="box tabular">
 <% Webhook.where(:project_id => @project.id).each do |webhook|%>
 <%= form_tag(update_webhook_path(@project, webhook.id), :method => :put, :class => "tabular") do %>
-<span>
-  <span><strong>URL</strong></span>
-  <%= text_field_tag :url, webhook.url, :size => 80 %>
-  <span><strong>Secret key</strong></span>
-  <%= password_field_tag :secret_key, webhook.secret_key, :size => 40 %>
+  <%= label_tag :url, l(:label_webhook_url), class: 'inline'%>
+  <%= text_field_tag :url, webhook.url, :size => 70 %>
+  <%= label_tag :secret_key, l(:label_webhook_secret_key), class: 'inline'%>
+  <span>
+    <%= password_field_tag :secret_key, webhook.secret_key, :size => 35 %>
+    <i id="toggle-password" class="icon icon-within icon-eye"></i>
+  </span>
   <%= submit_tag l(:button_update) %>
-</span>
 <% end %>
 <%= link_to l(:button_delete), delete_webhook_path(@project, webhook.id), :class => "icon icon-del", :method => :delete, :confirm => l(:text_are_you_sure) %>
 </br>
@@ -19,11 +20,28 @@
 <%= form_tag(create_webhook_path(@project), :method => :post, :class => "tabular") do %>
 <div class="box tabular">
 <span>
-  <span><strong>URL</strong></span>
-  <%= text_field_tag :url, '', :size => 80 %>
-  <span><strong>Secret key</strong></span>
-  <%= password_field_tag :secret_key, '', :size => 40 %>
+  <%= label_tag :url, l(:label_webhook_url), class: 'inline'%>
+  <%= text_field_tag :url, '', :size => 70 %>
+  <%= label_tag :secret_key, l(:label_webhook_secret_key), class: 'inline'%>
+  <span>
+    <%= password_field_tag :secret_key, '', :size => 35 %>
+    <i id="toggle-password-new" class="icon icon-within icon-eye"></i>
+  </span>
   <%= submit_tag l(:button_add) %>
 </span>
 </div>
+<% end %>
+
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag 'redmine_webhook', plugin: 'redmine_webhook' %>
+<% end %>
+
+<%= javascript_tag do %>
+  $(document).ready(function(){
+    $("#toggle-password, #toggle-password-new").click(function(){
+      var $field = $(this).prev();
+      $field.prop('type', $field.prop('type') === 'password' ? 'text' : 'password');
+      $(this).toggleClass("icon-eye icon-eye-slash");
+    });
+  });
 <% end %>
