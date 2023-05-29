@@ -10,7 +10,7 @@ Redmine::Plugin.register :redmine_webhook do
   name 'Redmine Webhook plugin'
   author 'suer'
   description 'A Redmine plugin posts webhook on creating and updating tickets'
-  version '0.0.5'
+  version '0.0.6'
   url 'https://github.com/suer/redmine_webhook'
   author_url 'http://d.hatena.ne.jp/suer'
   project_module :webhooks do
